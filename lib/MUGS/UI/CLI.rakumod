@@ -253,7 +253,7 @@ class Game is MUGS::UI::Game {
 
 =head1 NAME
 
-MUGS::UI::CLI - CLI UI for MUGS, including App and game UIs
+MUGS-UI-CLI - CLI UI for MUGS, including App and game UIs
 
 =head1 SYNOPSIS
 

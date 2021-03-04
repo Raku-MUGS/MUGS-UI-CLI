@@ -3,7 +3,7 @@
 NAME
 ====
 
-MUGS::UI::CLI - CLI UI for MUGS, including App and game UIs
+MUGS-UI-CLI - CLI UI for MUGS, including App and game UIs
 
 SYNOPSIS
 ========
