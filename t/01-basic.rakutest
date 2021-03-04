@@ -1,6 +1,0 @@
-use Test;
-use MUGS::UI::CLI;
-
-pass "replace me";
-
-done-testing;
