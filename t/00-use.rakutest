@@ -1,0 +1,29 @@
+use v6.d;
+use Test;
+
+# Will need at least these Core and Games versions to use these UI modules
+use MUGS::Core:ver<0.0.3>;
+use MUGS::Games:ver<0.0.3>;
+
+
+### CLI INTERFACE
+
+use MUGS::UI::CLI::Input;
+use MUGS::UI::CLI;
+
+use MUGS::UI::CLI::Game::Lobby;
+use MUGS::UI::CLI::Genre::Test;
+use MUGS::UI::CLI::Game::Echo;
+use MUGS::UI::CLI::Genre::Guessing;
+use MUGS::UI::CLI::Game::NumberGuess;
+use MUGS::UI::CLI::Game::Snowman;
+use MUGS::UI::CLI::Genre::IF;
+use MUGS::UI::CLI::Game::Adventure;
+
+use MUGS::App::CLI Empty;
+
+
+pass "all modules loaded successfully";
+
+
+done-testing;
