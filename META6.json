@@ -1,0 +1,24 @@
+{
+  "authors": [
+    "Geoffrey Broadwell"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "blah blah blah",
+  "license": "Artistic-2.0",
+  "name": "MUGS::UI::CLI",
+  "perl": "6.d",
+  "provides": {
+    "MUGS::UI::CLI": "lib/MUGS/UI/CLI.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
