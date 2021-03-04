@@ -12,7 +12,16 @@
   "name": "MUGS::UI::CLI",
   "perl": "6.d",
   "provides": {
+    "MUGS::App::CLI": "lib/MUGS/App/CLI.rakumod",
     "MUGS::UI::CLI": "lib/MUGS/UI/CLI.rakumod",
+    "MUGS::UI::CLI::Game::Adventure": "lib/MUGS/UI/CLI/Game/Adventure.rakumod",
+    "MUGS::UI::CLI::Game::Echo": "lib/MUGS/UI/CLI/Game/Echo.rakumod",
+    "MUGS::UI::CLI::Game::Lobby": "lib/MUGS/UI/CLI/Game/Lobby.rakumod",
+    "MUGS::UI::CLI::Game::NumberGuess": "lib/MUGS/UI/CLI/Game/NumberGuess.rakumod",
+    "MUGS::UI::CLI::Game::Snowman": "lib/MUGS/UI/CLI/Game/Snowman.rakumod",
+    "MUGS::UI::CLI::Genre::Guessing": "lib/MUGS/UI/CLI/Genre/Guessing.rakumod",
+    "MUGS::UI::CLI::Genre::IF": "lib/MUGS/UI/CLI/Genre/IF.rakumod",
+    "MUGS::UI::CLI::Genre::Test": "lib/MUGS/UI/CLI/Genre/Test.rakumod",
     "MUGS::UI::CLI::Input": "lib/MUGS/UI/CLI/Input.rakumod"
   },
   "resources": [
