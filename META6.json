@@ -6,6 +6,11 @@
   "build-depends": [
   ],
   "depends": [
+    "MUGS::Core:ver<0.0.3>",
+    "MUGS::Games:ver<0.0.3>",
+    "Term::termios",
+    "Terminal::ANSIColor",
+    "Text::MiscUtils::Layout"
   ],
   "description": "CLI UI for MUGS, including App and game UIs",
   "license": "Artistic-2.0",
