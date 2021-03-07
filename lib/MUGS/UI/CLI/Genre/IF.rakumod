@@ -33,8 +33,6 @@ class MUGS::UI::CLI::Genre::IF is MUGS::UI::CLI::Game {
         }
         else {
             $.app-ui.put-colored($exception.message, 'red');
-            # XXXX: Remove later
-            dd $exception;
         }
     }
 
