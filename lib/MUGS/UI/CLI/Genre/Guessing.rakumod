@@ -47,6 +47,7 @@ class MUGS::UI::CLI::Genre::Guessing is MUGS::UI::CLI::Game {
     }
 
     method submit-turn($guess) {
-        await $.client.send-guess: $guess, { self.show-guess-results($_) };
+        try await $.client.send-guess: $guess, { self.show-guess-results($_) };
+        say $!.error if $! ~~ X::MUGS::Response::InvalidRequest;
     }
 }
