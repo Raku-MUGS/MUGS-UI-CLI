@@ -39,7 +39,7 @@ class MUGS::UI::CLI::Game::Snowman is MUGS::UI::CLI::Genre::Guessing {
 
     method describe-picture(UInt:D $misses, Bool:D $correct) {
         # Save annoying extra talking in screen reader mode if guess was correct
-        return "Still $misses missed so far." if $correct;
+        return "Still $misses missed so far." if $correct && $misses;
 
         my @stages = self.stage-names.[^$misses].map('the ' ~ *);
         @stages[*-1] [R~]= 'and ' if @stages > 1;
