@@ -9,6 +9,7 @@ Revision history for MUGS-UI-CLI
   [Bug fixes]
   - Remove old debugging output
   - Display InvalidRequest error messages in Guessing genre
+  - Only mention misses in Snowman if there have been any
 
   [Games]
   - Support multi-round winloss status in Guessing genre and Snowman game
