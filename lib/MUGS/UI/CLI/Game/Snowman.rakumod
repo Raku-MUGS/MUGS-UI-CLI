@@ -19,7 +19,13 @@ class MUGS::UI::CLI::Game::Snowman is MUGS::UI::CLI::Genre::Guessing {
         given $response.data<winloss> {
             when Win  { "You win{', and just in time' if $response.data<misses> == 5}!" }
             when Loss { "Oh no, you didn't figure it out in time!" }
-            default   { '' }
+            default   {
+                given $response.data<round-result> // Undecided {
+                    when Win  { 'You win this round!  On to the next.' }
+                    when Loss { 'You ran out of time!  Try again next round.' }
+                    default   { '' }
+                }
+            }
         }
     }
 
