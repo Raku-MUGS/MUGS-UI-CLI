@@ -15,11 +15,11 @@ RUN apt-get update \
 
 COPY . /home/raku
 
-USER raku:raku
-
 RUN zef install --deps-only . \
  && raku -c -Ilib bin/mugs-cli
 
-RUN zef install .
+RUN zef install . --/test
+
+USER raku:raku
 
 ENTRYPOINT ["mugs-cli"]
