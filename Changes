@@ -1,8 +1,6 @@
 Revision history for MUGS-UI-CLI
 
-{{$NEXT}}
-
-0.0.4 *WIP*
+0.0.4  2021-03-10
   [Packaging]
   - Support Docker builds
 
@@ -15,5 +13,5 @@ Revision history for MUGS-UI-CLI
   - Support multi-round winloss status in Guessing genre and Snowman game
 
 
-0.0.3 2021-03-04
+0.0.3  2021-03-04
   - First public upload
