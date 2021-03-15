@@ -5,7 +5,7 @@ use MUGS::Client::Game::Adventure;
 use MUGS::UI::CLI::Genre::IF;
 
 
-#| CLI for a IF adventure game
+#| CLI for an IF adventure game
 class MUGS::UI::CLI::Game::Adventure is MUGS::UI::CLI::Genre::IF {
     method game-type() { 'adventure' }
 
