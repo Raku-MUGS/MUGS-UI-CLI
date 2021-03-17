@@ -2,8 +2,8 @@ use v6.d;
 use Test;
 
 # Will need at least these Core and Games versions to use these UI modules
-use MUGS::Core:ver<0.0.5>;
-use MUGS::Games:ver<0.0.5>;
+use MUGS::Core:ver<0.0.6>;
+use MUGS::Games:ver<0.0.6>;
 
 
 ### CLI INTERFACE
