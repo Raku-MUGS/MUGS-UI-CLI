@@ -1,6 +1,6 @@
 # ABSTRACT: CLI UI for MUGS, including App and game UIs
 
-unit module MUGS::UI::CLI:auth<zef:japhb>:ver<0.0.5>;
+unit module MUGS::UI::CLI:auth<zef:japhb>:ver<0.0.6>;
 
 use MUGS::Core;
 use MUGS::Client;
