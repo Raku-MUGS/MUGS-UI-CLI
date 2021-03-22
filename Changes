@@ -1,5 +1,11 @@
 Revision history for MUGS-UI-CLI
 
+0.0.7  *WIP*
+  [Packaging]
+  - Update versioned dependencies
+  - Add more generated HTML files to .gitignore
+
+
 0.0.6  2021-03-16
   [Bug fixes]
   - Fix dependency installs in README SYNOPSIS
