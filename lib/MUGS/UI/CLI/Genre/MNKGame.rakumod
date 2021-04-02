@@ -16,6 +16,8 @@ class MUGS::UI::CLI::Genre::MNKGame is MUGS::UI::CLI::Genre::BoardGame {
     }
 
     method show-board-state($response) {
+        return if $.client.gamestate == NotStarted;
+
         my $board = $response.data<board>;
         my $name  = $.client.character-name;
 
