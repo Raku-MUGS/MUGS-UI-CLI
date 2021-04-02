@@ -357,30 +357,9 @@ multi MAIN('perf', UInt:D $count = 100_000,
     $ui.shutdown;
 }
 
-#| Play a simple echo test "game"
-multi MAIN('echo',
-           |options where $common-args) is export {
-    play-via-local-ui(MUGS::App::CLI, :game-type<echo>, |options)
-}
-
-#| Play a simple number guessing game
-multi MAIN('number-guess', UInt $min = 1, UInt $max = 100,
-           |options where $common-args) is export {
-    my %config = :$min, :$max;
-    play-via-local-ui(MUGS::App::CLI, :game-type<number-guess>, :%config, |options)
-}
-
-#| Play snowman
-multi MAIN('snowman', UInt $difficulty = 5,
-           |options where $common-args) is export {
-    my %config = :$difficulty;
-    play-via-local-ui(MUGS::App::CLI, :game-type<snowman>, :%config, |options)
-}
-
-#| Play an adventure game
-multi MAIN('adventure',
-           |options where $common-args) is export {
-    play-via-local-ui(MUGS::App::CLI, :game-type<adventure>, |options)
+#| Play a requested CLI game
+multi MAIN($game-type, |options where $common-args) is export {
+    play-via-local-ui(MUGS::App::CLI, :$game-type, |options)
 }
 
 #| Enter the game choice lobby (DEFAULT)
