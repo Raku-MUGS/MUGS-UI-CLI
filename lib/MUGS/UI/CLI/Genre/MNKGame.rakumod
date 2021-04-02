@@ -7,6 +7,14 @@ use MUGS::UI::CLI::Genre::BoardGame;
 
 #| CLI genre for M,N,K games
 class MUGS::UI::CLI::Genre::MNKGame is MUGS::UI::CLI::Genre::BoardGame {
+    method game-help() {
+        q:to/HELP/.trim-trailing;
+            Enter a board location to play in, by column and row.  For example,
+            `a1` would play in the lower left corner.  Play several in a row
+            horizontally, vertically, or diagonally to win.
+            HELP
+    }
+
     method show-board-state($response) {
         my $board = $response.data<board>;
         my $name  = $.client.character-name;
