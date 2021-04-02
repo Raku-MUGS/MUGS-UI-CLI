@@ -21,6 +21,7 @@ class Game is MUGS::UI::Game {
     method ui-type()       { 'CLI' }
     method prompt-string() { '> '  }
     method is-lobby()      { False }
+    method game-help()     { ...   }
 
     method activate() {
         my $message  = do if $.screen-reader {
