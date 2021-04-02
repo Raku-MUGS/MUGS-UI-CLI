@@ -11,6 +11,11 @@ Revision history for MUGS-UI-CLI
   - Refactor/unify behavior of turn validation, submission, and error handling
   - Add simple BoardGame and MNKGame genres
 
+  [UI/UX]
+  - Stub game-help as needed for all game UIs
+  - Special handling for NotStarted in play loop and when asking for help
+
+
 0.1.0  2021-03-21
   [Packaging]
   - Update versioned dependencies
