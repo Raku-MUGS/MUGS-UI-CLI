@@ -20,9 +20,9 @@ class MUGS::UI::CLI::Genre::Guessing is MUGS::UI::CLI::Game {
         && $winloss == Undecided ?? 'You ran out of time!  Try again next round.' !! ''
     }
 
-    method show-guess-results($response) {
+    method show-turn-success($response) {
         say self.guess-status($response);
-        self.show-game-state($response);
+        callsame;
     }
 
     method show-game-state($response) {
@@ -40,14 +40,5 @@ class MUGS::UI::CLI::Genre::Guessing is MUGS::UI::CLI::Game {
 
     method show-initial-state(::?CLASS:D:) {
         await $.client.send-nop: { self.show-game-state($_) };
-    }
-
-    method valid-turn($guess) {
-        $.client.valid-guess($guess)
-    }
-
-    method submit-turn($guess) {
-        try await $.client.send-guess: $guess, { self.show-guess-results($_) };
-        say $!.error if $! ~~ X::MUGS::Response::InvalidRequest;
     }
 }

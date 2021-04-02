@@ -246,6 +246,40 @@ class Game is MUGS::UI::Game {
             else { put ''; await $.client.leave; return; }
         }
     }
+
+    method valid-turn(Str:D $input) {
+        $.client.valid-turn($input)
+    }
+
+    method submit-turn($input) {
+        my $finished;
+        await $.client.submit-turn($input, { self.show-turn-success($_) }).then: {
+            if .status == Broken {
+                self.show-error(.cause);
+            }
+            elsif .result.data<gamestate> >= Finished {
+                $finished = True;
+            }
+        }
+        self.game-finished if $finished;
+    }
+
+    method show-turn-success($response) {
+        self.show-game-state($response);
+    }
+
+    method show-error($exception) {
+        if $exception ~~ X::MUGS::Response::InvalidRequest {
+            $.app-ui.put-colored($exception.error, 'yellow');
+        }
+        else {
+            $.app-ui.put-colored($exception.message, 'red');
+        }
+    }
+
+    method game-finished() {
+        await $.client.leave;
+    }
 }
 
 

@@ -11,32 +11,9 @@ class MUGS::UI::CLI::Genre::IF is MUGS::UI::CLI::Game {
         self.show-game-state($.client.initial-state);
     }
 
-    # XXXX: For now, just always pass through the unparsed input
-    method valid-turn($input) { True }
+    method show-game-state($response) {
+        my %data := $response.data;
 
-    method submit-turn($input) {
-        my $finished;
-        await $.client.send-unparsed-input($input, { self.show-game-state(.data) }).then: {
-            if .status == Broken {
-                self.show-error(.cause);
-            }
-            elsif .result.data<gamestate> >= Finished {
-                $finished = True;
-            }
-        }
-        await $.client.leave if $finished;
-    }
-
-    method show-error($exception) {
-        if $exception ~~ X::MUGS::Response::InvalidRequest {
-            $.app-ui.put-colored($exception.error, 'yellow');
-        }
-        else {
-            $.app-ui.put-colored($exception.message, 'red');
-        }
-    }
-
-    method show-game-state(%data) {
         if %data<gamestate> >= Finished {
             with %data<winloss> {
                 when Loss { $.app-ui.put-colored('You have lost.', 'bold') }
