@@ -1,5 +1,16 @@
 Revision history for MUGS-UI-CLI
 
+0.1.1  *WIP*
+  [App]
+  - Simplify MAIN multi, allowing user to specify an arbitrary game-type
+
+  [Games]
+  - Add TicTacToe game (a trivial MNKGame)
+
+  [Genres]
+  - Refactor/unify behavior of turn validation, submission, and error handling
+  - Add simple BoardGame and MNKGame genres
+
 0.1.0  2021-03-21
   [Packaging]
   - Update versioned dependencies
