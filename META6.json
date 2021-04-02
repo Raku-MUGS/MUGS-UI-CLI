@@ -24,8 +24,11 @@
     "MUGS::UI::CLI::Game::Lobby": "lib/MUGS/UI/CLI/Game/Lobby.rakumod",
     "MUGS::UI::CLI::Game::NumberGuess": "lib/MUGS/UI/CLI/Game/NumberGuess.rakumod",
     "MUGS::UI::CLI::Game::Snowman": "lib/MUGS/UI/CLI/Game/Snowman.rakumod",
+    "MUGS::UI::CLI::Game::TicTacToe": "lib/MUGS/UI/CLI/Game/TicTacToe.rakumod",
+    "MUGS::UI::CLI::Genre::BoardGame": "lib/MUGS/UI/CLI/Genre/BoardGame.rakumod",
     "MUGS::UI::CLI::Genre::Guessing": "lib/MUGS/UI/CLI/Genre/Guessing.rakumod",
     "MUGS::UI::CLI::Genre::IF": "lib/MUGS/UI/CLI/Genre/IF.rakumod",
+    "MUGS::UI::CLI::Genre::MNKGame": "lib/MUGS/UI/CLI/Genre/MNKGame.rakumod",
     "MUGS::UI::CLI::Genre::Test": "lib/MUGS/UI/CLI/Genre/Test.rakumod",
     "MUGS::UI::CLI::Input": "lib/MUGS/UI/CLI/Input.rakumod"
   },

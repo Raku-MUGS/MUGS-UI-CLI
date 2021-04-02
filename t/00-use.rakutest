@@ -17,6 +17,9 @@ use MUGS::UI::CLI::Game::Echo;
 use MUGS::UI::CLI::Genre::Guessing;
 use MUGS::UI::CLI::Game::NumberGuess;
 use MUGS::UI::CLI::Game::Snowman;
+use MUGS::UI::CLI::Genre::BoardGame;
+use MUGS::UI::CLI::Genre::MNKGame;
+use MUGS::UI::CLI::Game::TicTacToe;
 use MUGS::UI::CLI::Genre::IF;
 use MUGS::UI::CLI::Game::Adventure;
 
