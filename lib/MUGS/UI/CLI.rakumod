@@ -112,6 +112,13 @@ class Game is MUGS::UI::Game {
         put '';
     }
 
+    method not-started-help() {
+        q:to/HELP/;
+            Your game has not started yet (perhaps waiting for additional players).
+            Once the game starts, you'll be able to play as follows:
+            HELP
+    }
+
     method general-help() {
         q:to/HELP/;
             You may also get help for advanced commands with `/help`
@@ -120,6 +127,7 @@ class Game is MUGS::UI::Game {
     }
 
     method show-game-help() {
+        put self.not-started-help if $.client.gamestate == NotStarted;
         put self.game-help;
         put '';
         put self.general-help;
@@ -224,6 +232,10 @@ class Game is MUGS::UI::Game {
     method play-turn(::?CLASS:D:) {
         loop {
             self.process-pushed-messages;
+
+            if $.client.gamestate == NotStarted {
+                $.app-ui.put-colored("Waiting for $.game-type game to start.", 'bold');
+            }
 
             my $styled-prompt = $.app-ui.styled-prompt(self.prompt-string);
 
