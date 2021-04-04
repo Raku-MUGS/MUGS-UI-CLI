@@ -18,29 +18,87 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
     method prompt-string() { %prompts{$.state} ~ ' > ' }
     method is-lobby()      { True }
 
-    method available-game-types(::?CLASS:D:) {
-        my @available = $.client.available-game-types.grep: {
-            MUGS::UI.ui-exists($.ui-type, .<game-type>)
-        };
+    method filter-games(@games, Bool :$all) {
+        $all ?? @games !! @games.grep: { MUGS::UI.ui-exists($.ui-type, .<game-type>) }
     }
 
-    method show-available-game-types(::?CLASS:D:) {
-        my @available = self.available-game-types.grep(*<game-type> ne 'lobby');
+    method available-game-types(::?CLASS:D: Bool :$all) {
+        self.filter-games($.client.available-game-types, :$all)
+    }
 
-        put 'Known game types:';
+    method active-games(::?CLASS:D: Bool :$all) {
+        self.filter-games($.client.active-games, :$all)
+    }
 
-        # XXXX: Factor out into a table maker or tree by genre
-        my $max-type   = max 6, @available.map(*<game-type>.chars).max;
-        my $max-genres = max 6, @available.map(*<genre-tags>.join(',').chars).max;
-        my $format     = "    %-{$max-type}s  %-{$max-genres}s  %s\n";
-        printf $format, 'TYPE', 'GENRES', 'DESCRIPTION';
-        for @available.sort({.<genre-tags>, .<game-type>}) {
-            printf $format, .<game-type>, .<genre-tags>.join(','), .<game-desc>;
+    method make-table(@columns, @data) {
+        use Terminal::ANSIColor;
+        # XXXX: Correct for duowidth
+        my @widths = @columns.map(*.chars // 1);
+        for @data -> @row {
+            die "Table data has wrong number of columns" if @row != @columns;
+
+            for @row.kv -> $i, $v {
+                @widths[$i] max= $v.chars;
+            }
+        }
+
+        my $format = @widths.map('%-' ~ * ~ 's').join('  ');
+        my @lines;
+        @lines.push: colored(sprintf($format, |@columns), 'bold');
+        @lines.push: sprintf($format, |$_) for @data;
+        @lines
+    }
+
+    method show-available-game-types(::?CLASS:D: Bool :$all) {
+        my @available = self.available-game-types(:$all).grep(*<game-type> ne 'lobby');
+        my @columns   = < TYPE GENRES DESCRIPTION >;
+        my @data      = @available.sort({.<genre-tags>, .<game-type>}).map: {
+            (.<game-type>, .<genre-tags>.join(','), .<game-desc>)
+        }
+
+        if @data {
+            put 'Known game types:';
+            .indent(4).put for self.make-table(@columns, @data);
+        }
+        else {
+            put q:to/NONE/;
+                There are no game-type matches between server, client, and UI.
+                You may need to install game plugins or use a different UI.
+                NONE
+        }
+    }
+
+    method show-active-games(::?CLASS:D: Bool :$all) {
+        my @active = self.active-games(:$all).grep(*<game-type> ne 'lobby').sort:
+                         { $^a<game-type> cmp $^b<game-type> ||
+                           $^a<game-id>   <=> $^b<game-id>   };
+        my @columns = < JOINED ID TYPE STATUS WAITING >;
+        my @data = @active.map: {
+            my $players = .<num-participants>;
+            my $joined  = $.client.session.games{.<game-id>} ?? '*' !!
+                          .<my-characters>                   ?? '!' !! '';
+            my $needed  = max(.<config><min-players>, .<config><start-players>);
+            my $full    = $players >= .<config><max-players>;
+            my $filling = .<gamestate> eq 'NotStarted' && $players < $needed;
+            my $waiting = $filling ?? "$players/$needed" !!
+                          $full    ?? '-full-'           !! '';
+
+            ($joined, .<game-id>, .<game-type>, .<gamestate>, $waiting)
+        }
+
+        if @data {
+            put 'Active games:';
+            .indent(4).put for self.make-table(@columns, @data);
+        }
+        else {
+            put 'There are no already active games that are playable in this UI.';
         }
     }
 
     method show-initial-state(::?CLASS:D:) {
         self.show-available-game-types;
+        put '';
+        self.show-active-games;
         put '';
     }
 
@@ -50,6 +108,8 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
         put self.general-help;
 
         self.show-available-game-types;
+        put '';
+        self.show-active-games;
         put '';
     }
 
