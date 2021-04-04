@@ -279,16 +279,34 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
         }
     }
 
+    #| Send the current UI to the end of the UI list
+    method send-current-ui-to-back() {
+        return unless @!active-game-uis > 1;
+
+        @!active-game-uis[0].deactivate;
+        @!active-game-uis.push: @!active-game-uis.shift;
+        @!active-game-uis[0].activate;
+    }
+
     #| Leave the current game UI, switching to the next frontmost if any
     method leave-current-ui() {
-        @!active-game-uis[0].shutdown;
-        @!active-game-uis.shift;
+        return unless @!active-game-uis;
 
         # Handle exiting from entire app by pressing ^D
         if $*IN.eof {
             self.leave-all-games;
         }
+        # Only leave the lobby if it is the last UI; otherwise just move
+        # the lobby to the back.
+        elsif @!active-game-uis[0].is-lobby && @!active-game-uis > 1 {
+            self.send-current-ui-to-back;
+        }
+        # Normal case: just leave the current game and UI
         else {
+            my $client = @!active-game-uis[0].client;
+            await $client.leave if $.session.client-is-active($client);
+            @!active-game-uis[0].shutdown;
+            @!active-game-uis.shift;
             @!active-game-uis[0].activate if @!active-game-uis;
         }
     }

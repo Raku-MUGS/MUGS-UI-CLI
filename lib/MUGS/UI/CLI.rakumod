@@ -207,6 +207,11 @@ class Game is MUGS::UI::Game {
         }
     }
 
+    method handle-leave() {
+        self.is-lobby ?? $.app-ui.leave-current-ui
+                      !! await $.client.leave;
+    }
+
     method handle-slash-command($command) {
         my ($slash, $rest) = $command.split(/\s+/, 2);
         given $slash.lc {
@@ -217,7 +222,7 @@ class Game is MUGS::UI::Game {
             # Game management
             when '/game'   { self.switch-to-game($rest); Sentinel::QUIT }
             when '/games'  { self.show-games }
-            when '/leave'  { await $.client.leave; Sentinel::QUIT }
+            when '/leave'  { self.handle-leave; Sentinel::QUIT }
             when '/lobby'  { $.app-ui.switch-to-lobby; Sentinel::QUIT }
 
             # Messaging
@@ -256,7 +261,7 @@ class Game is MUGS::UI::Game {
                     put 'That\'s not a valid input!';
                 }
             }
-            else { put ''; await $.client.leave; return; }
+            else { put ''; self.handle-leave; return; }
         }
     }
 
