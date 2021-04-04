@@ -271,12 +271,11 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
     #| Switch to lobby UI, launching it if none already started
     method switch-to-lobby() {
         my $game-type = 'lobby';
-        with @!active-game-uis.first(*.game-type eq $game-type, :k) -> $pos {
+        with @!active-game-uis.first(*.is-lobby, :k) -> $pos {
             self.switch-to-game-ui(:$pos);
         }
         else {
-            my $client = self.new-game-client(:$game-type);
-            self.launch-game-ui(:$game-type, :$client);
+            self.launch-game-ui(:$game-type, :client($.lobby-client));
         }
     }
 
