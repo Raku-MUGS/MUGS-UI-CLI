@@ -14,6 +14,9 @@ Revision history for MUGS-UI-CLI
   [UI/UX]
   - Stub game-help as needed for all game UIs
   - Special handling for NotStarted in play loop and when asking for help
+  - Better handling of game-leave, especially avoiding leaving lobby when
+    other game UIs remain active
+  - Show active game list in lobby at start and in lobby help
 
 
 0.1.0  2021-03-21
