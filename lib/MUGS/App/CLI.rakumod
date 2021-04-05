@@ -48,6 +48,10 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
         $text ~ ($.screen-reader ?? '.' !! ' ...')
     }
 
+    method put-status-update(Str:D $text) {
+        self.put-sanitized(self.present-tense-message($text));
+    }
+
     method styled-prompt(Str:D $prompt) {
         $!ansi ?? colored($prompt, 'bold yellow') !! $prompt
     }
