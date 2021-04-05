@@ -6,6 +6,7 @@ use MUGS::Core;
 use MUGS::Client;
 use MUGS::UI;
 use MUGS::UI::CLI::Input;
+use MUGS::Util::StructureValidator;
 
 
 # Sentinel to request this game UI should quit its play loop
@@ -55,25 +56,55 @@ class Game is MUGS::UI::Game {
     }
 
     method process-push-message(MUGS::Message::Push:D $message) {
-        if $message.type eq 'message' {
-            my $text   = $.app-ui.sanitize-text($message.data<message>);
-            my $sender = $.app-ui.sanitize-text($message.data<sender>);
+        given $message.type {
+            when 'game-update' {
+                self.show-game-state($message);
+            }
+            when 'game-event' {
+                constant %schema = {
+                    event => {
+                        character-name => Str but Optional,
+                        event-type     => GameEventType(Str),
+                    }
+                };
 
-            given $message.data<message-type> {
-                # XXXX: Color coding friends or admins?
-                when 'direct-message' {
-                    put "DM: <$sender> $text";
-                }
-                when 'broadcast' {
-                    put "<$sender> $text";
-                }
-                default {
-                    die "Unknown push message type!";
+                return if self.is-lobby;
+
+                my $validated = $message.validated-data(%schema)<event>;
+                my $character-name = $validated<character-name> // 'unknown';
+                given GameEventType::{$validated<event-type>} {
+                    when CharacterJoined {
+                        $.app-ui.put-sanitized("'$character-name' has joined.");
+                    }
+                    when CharacterLeft {
+                        $.app-ui.put-sanitized("'$character-name' has left.");
+                    }
                 }
             }
-        }
-        else {
-            die "Push message type '$message.type()' not yet implemented."
+            when 'message' {
+                constant %schema = message-type => Str,
+                                   message      => Str,
+                                   sender       => Str;
+                my $data   = $message.validated-data(%schema);
+                my $text   = $.app-ui.sanitize-text($data<message>);
+                my $sender = $.app-ui.sanitize-text($data<sender>);
+
+                given $data<message-type> {
+                    # XXXX: Color coding friends or admins?
+                    when 'direct-message' {
+                        put "DM: <$sender> $text";
+                    }
+                    when 'broadcast' {
+                        put "<$sender> $text";
+                    }
+                    default {
+                        die "Unknown push message type!";
+                    }
+                }
+            }
+            default {
+                !!! "Push message type '$_' not yet implemented.";
+            }
         }
     }
 
