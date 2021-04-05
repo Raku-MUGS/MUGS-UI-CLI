@@ -45,7 +45,7 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
         my @data = @active.map: {
             my $players = .<num-participants>;
             my $joined  = $.client.session.games{.<game-id>} ?? '*' !!
-                          .<my-characters>                   ?? '!' !! '';
+                          .<my-characters>.elems             ?? '!' !! '';
             my $needed  = max(.<config><min-players>, .<config><start-players>);
             my $full    = $players >= .<config><max-players>;
             my $filling = .<gamestate> eq 'NotStarted' && $players < $needed;
