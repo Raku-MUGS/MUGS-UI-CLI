@@ -98,8 +98,17 @@ class Game is MUGS::UI::Game {
                 $.app-ui.switch-to-game-ui(:$game-id);
             }
         }
-        elsif $game-id {
-            $.app-ui.put-sanitized("No such game ID '$game-id'; use `/games` to see a list.");
+        elsif $game-id -> GameID() $game-id {
+            my $game = self.active-games.first(*<game-id> eq $game-id);
+            with $game {
+                my $game-type = .<game-type>;
+                $.app-ui.put-status-update("Joining $game-type game '$game-id'");
+                my $client = $.app-ui.new-game-client(:$game-type, :$game-id);
+                $.app-ui.launch-game-ui(:$game-type, :$client)
+            }
+            else {
+                $.app-ui.put-sanitized("No such game ID '$game-id'; use `/games` to see a list.");
+            }
         }
         else {
             put 'Must specify a game ID; use `/games` to see a list.';
