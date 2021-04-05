@@ -93,6 +93,25 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
         return @options[$option - 1].key;
     }
 
+    method make-table(@columns, @data) {
+        # XXXX: Correct for duowidth
+        my @widths = @columns.map(*.chars // 1);
+        for @data -> @row {
+            die "Table data has wrong number of columns" if @row != @columns;
+
+            for @row.kv -> $i, $v {
+                @widths[$i] max= $v.chars;
+            }
+        }
+
+        my $format = @widths.map('%-' ~ * ~ 's').join('  ');
+        my @lines;
+        @lines.push: colored(sprintf($format, |@columns), 'bold');
+        @lines.push: sprintf($format, |$_) for @data;
+        @lines
+    }
+
+
 
     #| Connect to server and authenticate as a valid user
     method ensure-authenticated-session(Str $server, Str $universe) {

@@ -77,6 +77,18 @@ class Game is MUGS::UI::Game {
         }
     }
 
+    method filter-games(@games, Bool :$all) {
+        $all ?? @games !! @games.grep: { MUGS::UI.ui-exists($.ui-type, .<game-type>) }
+    }
+
+    method available-game-types(::?CLASS:D: Bool :$all) {
+        self.filter-games($.client.available-game-types, :$all)
+    }
+
+    method active-games(::?CLASS:D: Bool :$all) {
+        self.filter-games($.client.active-games, :$all)
+    }
+
     method switch-to-game($game-id) {
         if $game-id && $.client.session.games{$game-id} {
             if $game-id eq $.client.game-id {

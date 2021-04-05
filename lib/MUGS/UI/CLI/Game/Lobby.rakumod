@@ -18,37 +18,6 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
     method prompt-string() { %prompts{$.state} ~ ' > ' }
     method is-lobby()      { True }
 
-    method filter-games(@games, Bool :$all) {
-        $all ?? @games !! @games.grep: { MUGS::UI.ui-exists($.ui-type, .<game-type>) }
-    }
-
-    method available-game-types(::?CLASS:D: Bool :$all) {
-        self.filter-games($.client.available-game-types, :$all)
-    }
-
-    method active-games(::?CLASS:D: Bool :$all) {
-        self.filter-games($.client.active-games, :$all)
-    }
-
-    method make-table(@columns, @data) {
-        use Terminal::ANSIColor;
-        # XXXX: Correct for duowidth
-        my @widths = @columns.map(*.chars // 1);
-        for @data -> @row {
-            die "Table data has wrong number of columns" if @row != @columns;
-
-            for @row.kv -> $i, $v {
-                @widths[$i] max= $v.chars;
-            }
-        }
-
-        my $format = @widths.map('%-' ~ * ~ 's').join('  ');
-        my @lines;
-        @lines.push: colored(sprintf($format, |@columns), 'bold');
-        @lines.push: sprintf($format, |$_) for @data;
-        @lines
-    }
-
     method show-available-game-types(::?CLASS:D: Bool :$all) {
         my @available = self.available-game-types(:$all).grep(*<game-type> ne 'lobby');
         my @columns   = < TYPE GENRES DESCRIPTION >;
@@ -58,7 +27,7 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
 
         if @data {
             put 'Known game types:';
-            .indent(4).put for self.make-table(@columns, @data);
+            .indent(4).put for $.app-ui.make-table(@columns, @data);
         }
         else {
             put q:to/NONE/;
@@ -88,7 +57,7 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
 
         if @data {
             put 'Active games:';
-            .indent(4).put for self.make-table(@columns, @data);
+            .indent(4).put for $.app-ui.make-table(@columns, @data);
         }
         else {
             put 'There are no already active games that are playable in this UI.';
