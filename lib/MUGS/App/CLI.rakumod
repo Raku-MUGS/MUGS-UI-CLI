@@ -122,7 +122,7 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
         my $decoded = self.decode-server($server);
 
         # Try to connect, bailing out if unable to do so
-        (my $session = TRY { self.connect($decoded<url> // $decoded<server>, $universe) })
+        (my $session = try self.connect($decoded<url> // $decoded<server>, $universe))
             or self.exit-with-errors("Unable to connect to MUGS server '$decoded<server>':", [$!]);
 
         my $username  = $decoded<username>
