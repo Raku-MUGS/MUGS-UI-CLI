@@ -21,6 +21,17 @@ class MUGS::UI::CLI::Genre::BoardGame is MUGS::UI::CLI::Game {
         $.app-ui.put-colored($winloss, 'bold') if $winloss;
 
         self.show-board-state($response);
+
+        return unless $response.data<gamestate> == InProgress;
+
+        my %schema = next-character => Str;
+        my $next-character = $response.validated-data(%schema)<next-character>;
+        if $next-character eq self.client.character-name {
+            $.app-ui.put-colored("It's your turn.", 'bold');
+        }
+        else {
+            $.app-ui.put-sanitized("Waiting for '$next-character' to play their turn.");
+        }
     }
 
     method show-initial-state(::?CLASS:D:) {
