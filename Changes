@@ -1,8 +1,12 @@
 Revision history for MUGS-UI-CLI
 
 0.1.1  *WIP*
+  [Bug fixes]
+  - De-clever-ize session connect, which was giving LTA connection errors
+
   [App]
   - Simplify MAIN multi, allowing user to specify an arbitrary game-type
+  - Add additional UI output helper methods
 
   [Games]
   - Add TicTacToe game (a trivial MNKGame)
@@ -17,6 +21,10 @@ Revision history for MUGS-UI-CLI
   - Better handling of game-leave, especially avoiding leaving lobby when
     other game UIs remain active
   - Show active game list in lobby at start and in lobby help
+  - Support using /game <id> to join games as well as switch to them
+  - When a game starts, show a notice and the initial state
+  - Tell BoardGame players whose turn is next
+  - Complete revamp of push message handling
 
 
 0.1.0  2021-03-21
