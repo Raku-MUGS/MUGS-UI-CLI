@@ -79,6 +79,10 @@ class Game is MUGS::UI::Game {
                     when CharacterLeft {
                         $.app-ui.put-sanitized("'$character-name' has left.");
                     }
+                    when GameStarted {
+                        $.app-ui.put-sanitized("$.game-type game $.client.game-id() started.");
+                        self.show-initial-state;
+                    }
                 }
             }
             when 'message' {
