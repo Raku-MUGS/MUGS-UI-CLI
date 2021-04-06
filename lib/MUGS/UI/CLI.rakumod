@@ -68,11 +68,16 @@ class Game is MUGS::UI::Game {
                     }
                 };
 
-                return if self.is-lobby;
-
-                my $validated = $message.validated-data(%schema)<event>;
+                my $validated      = $message.validated-data(%schema)<event>;
+                my $event-type     = GameEventType::{$validated<event-type>};
                 my $character-name = $validated<character-name> // 'unknown';
-                given GameEventType::{$validated<event-type>} {
+
+                if self.is-lobby {
+                    self.show-initial-state if $event-type == GameStarted;
+                    return;
+                }
+
+                given $event-type {
                     when CharacterJoined {
                         $.app-ui.put-sanitized("'$character-name' has joined.");
                     }
