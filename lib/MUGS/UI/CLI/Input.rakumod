@@ -255,7 +255,7 @@ class MUGS::UI::CLI::Input {
           1 => 'move-to-start',       # CTRL-A
           2 => 'move-back',           # CTRL-B
           3 => 'abort-input',         # CTRL-C
-          4 => 'delete-char-forward', # CTRL-D
+          4 => 'abort-or-delete',     # CTRL-D (or delete-char-forward)
           5 => 'move-to-end',         # CTRL-E
           6 => 'move-forward',        # CTRL-F
           7 => 'abort-modal',         # CTRL-G
@@ -279,6 +279,7 @@ class MUGS::UI::CLI::Input {
     method bind-key(UInt:D $ord, Str:D $action) {
         die "Unknown action '$action'"
             unless MUGS::UI::CLI::Input::Buffer.^can("edit-$action")
+                || $action eq 'abort-or-delete'
                 || $action eq 'abort-input'
                 || $action eq 'finish';
         %!keymap{$ord} = $action;
@@ -378,6 +379,8 @@ class MUGS::UI::CLI::Input {
             with %!keymap{$c.ord} {
                 when 'finish'          { last }
                 when 'abort-input'     { return Str }
+                when 'abort-or-delete' { return Str unless $buffer.buffer;
+                                         do-edit('delete-char-forward') }
                 default                { do-edit($_) }
             }
             else { do-edit('insert-string', $c) }
