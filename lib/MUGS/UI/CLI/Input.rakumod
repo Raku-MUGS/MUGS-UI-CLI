@@ -363,22 +363,24 @@ class MUGS::UI::CLI::Input {
                                                       :cursor-end($cols // 80),
                                                       :$mask);
 
+        # DRY helper
+        my sub do-edit($command, $insert?) {
+            my $edited = $insert ?? $buffer.edit-insert-string($insert)
+                                 !! $buffer."edit-$command"();
+            $!output.print($buffer.refresh($edited));
+            $!output.flush
+        }
+
         # Read raw characters and dispatch either as actions or chars to insert
         loop {
             my $c = self.read-raw-char // last;
 
             with %!keymap{$c.ord} {
-                when 'finish'      { last }
-                when 'abort-input' { return Str }
-                default            { my $edited = $buffer."edit-$_"();
-                                     $!output.print($buffer.refresh($edited));
-                                     $!output.flush }
+                when 'finish'          { last }
+                when 'abort-input'     { return Str }
+                default                { do-edit($_) }
             }
-            else {
-                $buffer.edit-insert-string($c);
-                $!output.print($buffer.refresh(True));
-                $!output.flush;
-            }
+            else { do-edit('insert-string', $c) }
         }
 
         # Return final buffer
