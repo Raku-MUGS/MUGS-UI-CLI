@@ -19,7 +19,8 @@ class MUGS::UI::CLI::Genre::MNKGame is MUGS::UI::CLI::Genre::BoardGame {
         return if $.client.gamestate == NotStarted;
 
         my $board = $response.data<board>;
-        my $name  = $.client.character-name;
+        my $order = $response.data<initial-order>;
+        my %marks = @$order Z=> < X O >;
 
         # XXXX: Check board is valid and non-degenerate
 
@@ -30,9 +31,7 @@ class MUGS::UI::CLI::Genre::MNKGame is MUGS::UI::CLI::Genre::BoardGame {
         my $max-col-string = $wide-board ?? $board-width.chars !! 1;
 
         for $board.pairs.reverse -> (:key($y), :value(@row)) {
-            my $row = @row.map(-> $cell {
-                $cell ?? ($cell eq $name ?? 'X' !! 'O') !! ' '
-            }).join(' | ');
+            my $row = @row.map({ %marks{$_} // ' ' }).join(' | ');
             printf "%{$max-row-string}d %s\n", $y+1, $row;
         }
 
