@@ -11,7 +11,7 @@ class MUGS::UI::CLI::Genre::Guessing is MUGS::UI::CLI::Game {
     method guess-status($response)   { ... }
     method game-status($response)    { '' }
     method winloss-status($response) {
-        my $winloss = $response.data<winloss>      // Undecided;
+        my $winloss = $.client.my-winloss($response);
         my $round   = $response.data<round-result> // Undecided;
 
            $winloss == Win       ?? 'You win!' !!

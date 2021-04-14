@@ -16,7 +16,7 @@ class MUGS::UI::CLI::Game::Snowman is MUGS::UI::CLI::Genre::Guessing {
     }
 
     method winloss-status($response) {
-        given $response.data<winloss> {
+        given $.client.my-winloss($response) {
             when Win  { "You win{', and just in time' if $response.data<misses> == 5}!" }
             when Loss { "Oh no, you didn't figure it out in time!" }
             default   {

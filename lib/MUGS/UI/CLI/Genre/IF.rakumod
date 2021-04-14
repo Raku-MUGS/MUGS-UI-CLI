@@ -15,7 +15,7 @@ class MUGS::UI::CLI::Genre::IF is MUGS::UI::CLI::Game {
         my %data := $response.data;
 
         if %data<gamestate> >= Finished {
-            with %data<winloss> {
+            given $.client.my-winloss($response) {
                 when Loss { $.app-ui.put-colored('You have lost.', 'bold') }
                 when Win  { $.app-ui.put-colored('You have won!',  'bold') }
             }

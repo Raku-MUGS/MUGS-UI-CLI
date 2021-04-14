@@ -8,7 +8,7 @@ use MUGS::UI::CLI;
 #| CLI genre for board games
 class MUGS::UI::CLI::Genre::BoardGame is MUGS::UI::CLI::Game {
     method winloss-status($response) {
-        given $response.data<winloss> {
+        given $.client.my-winloss($response) {
             when Win  { 'You have won!'  }
             when Tie  { "It's a draw."   }
             when Loss { 'You have lost.' }
