@@ -10,7 +10,7 @@ use Text::MiscUtils::Layout;
 role MUGS::UI::Input::Buffer {
     has UInt:D $.insert-pos = 0;
     has Str:D  $.buffer     = '';
-    has Str    $.cut;
+    has Str    $.yankable;
 
 
     # NOTE: Return values below indicate whether $!buffer may have been changed
@@ -40,9 +40,9 @@ role MUGS::UI::Input::Buffer {
 
     ### Delete
     method !delete(|c) {
-        my $cut := $!buffer.substr-rw(|c);
-        $!cut = $cut if $cut;
-        $cut  = '';
+        my $chunk := $!buffer.substr-rw(|c);
+        $!yankable = $chunk if $chunk;
+        $chunk     = '';
     }
 
     method edit-delete-char-back(--> True) {
@@ -106,7 +106,7 @@ role MUGS::UI::Input::Buffer {
     }
 
     method edit-yank() {
-        $.cut ?? self.edit-insert-string($.cut) !! False
+        $.yankable ?? self.edit-insert-string($.yankable) !! False
     }
 
     method edit-swap-chars(--> True) {
