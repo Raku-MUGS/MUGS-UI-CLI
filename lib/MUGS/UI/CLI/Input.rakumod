@@ -262,28 +262,28 @@ class MUGS::UI::CLI::Input {
 
     #| Default key map (from input character ord to edit-* method)
     method default-keymap() {
-          1 => 'move-to-start',       # CTRL-A
-          2 => 'move-back',           # CTRL-B
-          3 => 'abort-input',         # CTRL-C
-          4 => 'abort-or-delete',     # CTRL-D (or delete-char-forward)
-          5 => 'move-to-end',         # CTRL-E
-          6 => 'move-forward',        # CTRL-F
-          7 => 'abort-modal',         # CTRL-G
-          8 => 'delete-char-back',    # CTRL-H
-          9 => 'tab',                 # CTRL-I, TAB
-         10 => 'finish',              # CTRL-J, LF
-         11 => 'delete-to-end',       # CTRL-K
-         12 => 'refresh-all',         # CTRL-L
-         13 => 'finish',              # CTRL-M, CR
-         14 => 'history-next',        # CTRL-N
-         16 => 'history-prev',        # CTRL-P
-         20 => 'swap-chars',          # CTRL-T
-         21 => 'delete-to-start',     # CTRL-U
-         22 => 'literal-next',        # CTRL-V
-         23 => 'delete-word-back',    # CTRL-W
-         25 => 'yank',                # CTRL-Y
-         27 => 'escape',              # CTRL-[, ESC
-        127 => 'delete-char-back',    # CTRL-?, BACKSPACE
+          1 => 'move-to-start',          # CTRL-A
+          2 => 'move-back',              # CTRL-B
+          3 => 'abort-input',            # CTRL-C
+          4 => 'abort-or-delete',        # CTRL-D (or delete-char-forward)
+          5 => 'move-to-end',            # CTRL-E
+          6 => 'move-forward',           # CTRL-F
+          7 => 'abort-modal',            # CTRL-G
+          8 => 'delete-char-back',       # CTRL-H
+          9 => 'tab',                    # CTRL-I, TAB
+         10 => 'finish',                 # CTRL-J, LF
+         11 => 'delete-to-end',          # CTRL-K
+         12 => 'refresh-all',            # CTRL-L
+         13 => 'finish',                 # CTRL-M, CR
+         14 => 'history-next',           # CTRL-N
+         16 => 'history-prev',           # CTRL-P
+         20 => 'swap-chars',             # CTRL-T
+         21 => 'delete-to-start',        # CTRL-U
+         22 => 'literal-next',           # CTRL-V
+         23 => 'delete-word-back',       # CTRL-W
+         25 => 'yank',                   # CTRL-Y
+         27 => 'escape',                 # CTRL-[, ESC
+        127 => 'delete-char-back',       # CTRL-?, BACKSPACE
           ;
     }
 
