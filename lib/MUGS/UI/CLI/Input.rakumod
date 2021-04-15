@@ -10,6 +10,7 @@ use Text::MiscUtils::Layout;
 role MUGS::UI::Input::Buffer {
     has UInt:D $.insert-pos = 0;
     has Str:D  $.buffer     = '';
+    has Str    $.cut;
 
 
     # NOTE: Return values below indicate whether $!buffer may have been changed
@@ -38,13 +39,19 @@ role MUGS::UI::Input::Buffer {
 
 
     ### Delete
+    method !delete(|c) {
+        my $cut := $!buffer.substr-rw(|c);
+        $!cut = $cut if $cut;
+        $cut  = '';
+    }
+
     method edit-delete-char-back(--> True) {
-        substr-rw($!buffer, --$!insert-pos, 1) = ''
+        self!delete(--$!insert-pos, 1)
             if 0 < $!insert-pos <= $!buffer.chars;
     }
 
     method edit-delete-char-forward(--> True) {
-        substr-rw($!buffer, $!insert-pos, 1) = ''
+        self!delete($!insert-pos, 1)
             if 0 <= $!insert-pos < $!buffer.chars;
     }
 
@@ -55,7 +62,7 @@ role MUGS::UI::Input::Buffer {
             --$cut while $cut >= 0 && substr($!buffer, $cut, 1) ~~ /\S/;
             $cut++;
 
-            substr-rw($!buffer, $cut, $!insert-pos - $cut) = '';
+            self!delete($cut, $!insert-pos - $cut);
             $!insert-pos = $cut;
         }
     }
@@ -68,27 +75,26 @@ role MUGS::UI::Input::Buffer {
             ++$cut while $cut < $chars && substr($!buffer, $cut, 1) ~~ /\S/;
             $cut--;
 
-            substr-rw($!buffer, $!insert-pos, $cut, $cut - $!insert-pos) = '';
+            self!delete($!insert-pos, $cut - $!insert-pos);
         }
     }
 
     method edit-delete-to-start(--> True) {
-        substr-rw($!buffer, 0, $!insert-pos) = '';
+        self!delete(0, $!insert-pos);
         $!insert-pos = 0;
     }
 
     method edit-delete-to-end(--> True) {
-        substr-rw($!buffer, $!insert-pos) = ''
+        self!delete($!insert-pos)
             if 0 <= $!insert-pos < $!buffer.chars;
     }
 
     method edit-delete-line(--> True) {
-        $!buffer = '';
-        $!insert-pos = 0;
+        self!delete($!insert-pos = 0);
     }
 
 
-    ### Insert/Swap
+    ### Insert/Yank/Swap
     method edit-insert-string(Str:D $string --> True) {
         # The complexity below is because the inserted string might start with
         # combining characters, and thus due to NFG renormalization insert-pos
@@ -97,6 +103,10 @@ role MUGS::UI::Input::Buffer {
         my $before    = $!buffer.chars;
         substr-rw($!buffer, $!insert-pos, 0) = $string;
         $!insert-pos += $!buffer.chars - $before;
+    }
+
+    method edit-yank() {
+        $.cut ?? self.edit-insert-string($.cut) !! False
     }
 
     method edit-swap-chars(--> True) {
