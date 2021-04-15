@@ -3,6 +3,7 @@ Revision history for MUGS-UI-CLI
 0.1.1  *WIP*
   [Bug fixes]
   - De-clever-ize session connect, which was giving LTA connection errors
+  - Fix ^U to default binding delete-to-start (instead of delete-line)
 
   [App]
   - Simplify MAIN multi, allowing user to specify an arbitrary game-type
@@ -14,6 +15,19 @@ Revision history for MUGS-UI-CLI
   [Genres]
   - Refactor/unify behavior of turn validation, submission, and error handling
   - Add simple BoardGame and MNKGame genres
+  - Make MNKGame aware of start player (and thus who gets which marks)
+  - Support per-participant winloss status
+
+  [Input]
+  - Refactoring
+    - MUGS::UI::CLI::Input loop
+    - Special key binding handling
+    - Delete-related edit code
+  - Support new features/bindings
+    - abort-or-delete (used for ^D)
+    - literal-next (used for ^V)
+    - yank (used for ^Y) with a single-level cut/yank buffer
+    - suspend (used for ^Z) including proper continue refresh handling
 
   [UI/UX]
   - Stub game-help as needed for all game UIs
