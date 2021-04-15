@@ -326,7 +326,7 @@ class MUGS::UI::CLI::Input {
     }
 
     #| Suspend using SIGTSTP job control, switching back to normal mode first
-    method suspend($buffer) {
+    method suspend(:$buffer, :&on-continue) {
         # Return to normal terminal mode
         self.leave-raw-mode;
 
@@ -336,10 +336,14 @@ class MUGS::UI::CLI::Input {
         raise(SIGTSTP);
 
         # Returning from raise(SIGTSTP) means that a SIGCONT has arrived,
-        # so go back into raw mode and refresh the displayed edit buffer
+        # so run &on-continue if any, then go back into raw mode and
+        # refresh the displayed edit buffer, offsetting the cursor as needed.
+
+        $_() with &on-continue;
         self.enter-raw-mode;
-        # XXXX: What about redrawing prompt?
-        $!output.print($buffer.refresh);
+        my $offset-move = $buffer.cursor-move-command(  $buffer.cursor-pos
+                                                      - $buffer.cursor-start);
+        $!output.print($offset-move ~ $buffer.refresh);
     }
 
     #| Read a single raw character, decoding bytes, returning Str if input cut off;
@@ -387,7 +391,8 @@ class MUGS::UI::CLI::Input {
     }
 
     #| Full input/edit loop; returns final user input or Str if aborted
-    method input(Str :$mask, Bool:D :$history = False, Str:D :$context = 'default' --> Str) {
+    method input(Str :$mask, Bool:D :$history = False, Str:D :$context = 'default',
+                 :&on-continue --> Str) {
         # If not a terminal, just read a line from input and return it
         return $!input.get // Str unless $!input.t;
 
@@ -423,7 +428,7 @@ class MUGS::UI::CLI::Input {
             }
             orwith %!keymap{$c.ord} {
                 when 'literal-next'    { $literal-mode = True }
-                when 'suspend'         { self.suspend($buffer) }
+                when 'suspend'         { self.suspend(:$buffer, :&on-continue) }
                 when 'finish'          { last }
                 when 'abort-input'     { return Str }
                 when 'abort-or-delete' { return Str unless $buffer.buffer;
@@ -439,9 +444,12 @@ class MUGS::UI::CLI::Input {
 
     #| Print and flush prompt then enter input loop, optionally masking password
     method prompt(Str:D $prompt = '', Str :$mask --> Str) {
-        $!output.print($prompt);
-        $!output.flush;
+        my sub flush-prompt() {
+            $!output.print($prompt);
+            $!output.flush;
+        }
 
-        self.input(:$mask)
+        flush-prompt;
+        self.input(:$mask, :on-continue(&flush-prompt))
     }
 }
