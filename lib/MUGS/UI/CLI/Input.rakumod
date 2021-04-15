@@ -262,6 +262,7 @@ class MUGS::UI::CLI::Input {
 
     #| Default key map (from input character ord to edit-* method)
     method default-keymap() {
+        # 0 => '',                       # CTRL-@
           1 => 'move-to-start',          # CTRL-A
           2 => 'move-back',              # CTRL-B
           3 => 'abort-input',            # CTRL-C
@@ -276,13 +277,23 @@ class MUGS::UI::CLI::Input {
          12 => 'refresh-all',            # CTRL-L
          13 => 'finish',                 # CTRL-M, CR
          14 => 'history-next',           # CTRL-N
+       # 15 => '',                       # CTRL-O
          16 => 'history-prev',           # CTRL-P
+       # 17 => '',                       # CTRL-Q
+       # 18 => 'history-reverse-search', # CTRL-R
+       # 19 => 'history-forward-search', # CTRL-S
          20 => 'swap-chars',             # CTRL-T
          21 => 'delete-to-start',        # CTRL-U
          22 => 'literal-next',           # CTRL-V
          23 => 'delete-word-back',       # CTRL-W
+       # 24 => 'prefix',                 # CTRL-X
          25 => 'yank',                   # CTRL-Y
+       # 26 => 'suspend',                # CTRL-Z
          27 => 'escape',                 # CTRL-[, ESC
+       # 28 => 'quit',                   # CTRL-\
+       # 29 => '',                       # CTRL-]
+       # 30 => '',                       # CTRL-^
+       # 31 => 'undo',                   # CTRL-_
         127 => 'delete-char-back',       # CTRL-?, BACKSPACE
           ;
     }
