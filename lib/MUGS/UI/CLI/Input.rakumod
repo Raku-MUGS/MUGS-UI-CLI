@@ -277,11 +277,11 @@ class MUGS::UI::CLI::Input {
 
     #| Bind a key (by ord) to an edit action (by short string name)
     method bind-key(UInt:D $ord, Str:D $action) {
+        constant $special
+            = set < abort-input abort-or-delete finish literal-next >;
         die "Unknown action '$action'"
             unless MUGS::UI::CLI::Input::Buffer.^can("edit-$action")
-                || $action eq 'abort-or-delete'
-                || $action eq 'abort-input'
-                || $action eq 'finish';
+                || $special{$action};
         %!keymap{$ord} = $action;
     }
 
@@ -373,10 +373,16 @@ class MUGS::UI::CLI::Input {
         }
 
         # Read raw characters and dispatch either as actions or chars to insert
+        my $literal-mode = False;
         loop {
             my $c = self.read-raw-char // last;
 
-            with %!keymap{$c.ord} {
+            if $literal-mode {
+                do-edit('insert-string', $c);
+                $literal-mode = False;
+            }
+            orwith %!keymap{$c.ord} {
+                when 'literal-next'    { $literal-mode = True }
                 when 'finish'          { last }
                 when 'abort-input'     { return Str }
                 when 'abort-or-delete' { return Str unless $buffer.buffer;
