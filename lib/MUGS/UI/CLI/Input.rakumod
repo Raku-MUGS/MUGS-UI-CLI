@@ -278,10 +278,12 @@ class MUGS::UI::CLI::Input {
          14 => 'history-next',        # CTRL-N
          16 => 'history-prev',        # CTRL-P
          20 => 'swap-chars',          # CTRL-T
-         21 => 'delete-line',         # CTRL-U
+         21 => 'delete-to-start',     # CTRL-U
+         22 => 'literal-next',        # CTRL-V
          23 => 'delete-word-back',    # CTRL-W
-         27 => 'escape',              # ESC
-        127 => 'delete-char-back',    # BACKSPACE
+         25 => 'yank',                # CTRL-Y
+         27 => 'escape',              # CTRL-[, ESC
+        127 => 'delete-char-back',    # CTRL-?, BACKSPACE
           ;
     }
 
