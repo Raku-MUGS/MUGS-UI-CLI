@@ -288,7 +288,7 @@ class MUGS::UI::CLI::Input {
          23 => 'delete-word-back',       # CTRL-W
        # 24 => 'prefix',                 # CTRL-X
          25 => 'yank',                   # CTRL-Y
-       # 26 => 'suspend',                # CTRL-Z
+         26 => 'suspend',                # CTRL-Z
          27 => 'escape',                 # CTRL-[, ESC
        # 28 => 'quit',                   # CTRL-\
        # 29 => '',                       # CTRL-]
@@ -301,7 +301,7 @@ class MUGS::UI::CLI::Input {
     #| Bind a key (by ord) to an edit action (by short string name)
     method bind-key(UInt:D $ord, Str:D $action) {
         constant $special
-            = set < abort-input abort-or-delete finish literal-next >;
+            = set < abort-input abort-or-delete finish literal-next suspend >;
         die "Unknown action '$action'"
             unless MUGS::UI::CLI::Input::Buffer.^can("edit-$action")
                 || $special{$action};
@@ -323,6 +323,23 @@ class MUGS::UI::CLI::Input {
         $!saved-termios.setattr(:DRAIN) if $!saved-termios;
         $!saved-termios = Any;
         $!output.put('');
+    }
+
+    #| Suspend using SIGTSTP job control, switching back to normal mode first
+    method suspend($buffer) {
+        # Return to normal terminal mode
+        self.leave-raw-mode;
+
+        # Send this process SIGTSTP via the native raise() function
+        use NativeCall;
+        sub raise(int32 --> int32) is native {*}
+        raise(SIGTSTP);
+
+        # Returning from raise(SIGTSTP) means that a SIGCONT has arrived,
+        # so go back into raw mode and refresh the displayed edit buffer
+        self.enter-raw-mode;
+        # XXXX: What about redrawing prompt?
+        $!output.print($buffer.refresh);
     }
 
     #| Read a single raw character, decoding bytes, returning Str if input cut off;
@@ -406,6 +423,7 @@ class MUGS::UI::CLI::Input {
             }
             orwith %!keymap{$c.ord} {
                 when 'literal-next'    { $literal-mode = True }
+                when 'suspend'         { self.suspend($buffer) }
                 when 'finish'          { last }
                 when 'abort-input'     { return Str }
                 when 'abort-or-delete' { return Str unless $buffer.buffer;
