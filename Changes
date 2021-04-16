@@ -1,6 +1,6 @@
 Revision history for MUGS-UI-CLI
 
-0.1.1  *WIP*
+0.1.1  2021-04-15
   [Bug fixes]
   - De-clever-ize session connect, which was giving LTA connection errors
   - Fix ^U to default binding delete-to-start (instead of delete-line)
