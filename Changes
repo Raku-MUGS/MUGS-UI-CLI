@@ -1,5 +1,12 @@
 Revision history for MUGS-UI-CLI
 
+0.1.2  *WIP*
+  [CBOR transition]
+  - Most changes this release are trivial changes to support the overall
+    transition of MUGS to CBOR network message serialization; more details
+    in the MUGS-Core Changes doc
+
+
 0.1.1  2021-04-15
   [Bug fixes]
   - De-clever-ize session connect, which was giving LTA connection errors
