@@ -64,12 +64,12 @@ class Game is MUGS::UI::Game {
                 constant %schema = {
                     event => {
                         character-name => Str but Optional,
-                        event-type     => GameEventType(Str),
+                        event-type     => GameEventType(Int),
                     }
                 };
 
                 my $validated      = $message.validated-data(%schema)<event>;
-                my $event-type     = GameEventType::{$validated<event-type>};
+                my $event-type     = GameEventType($validated<event-type>);
                 my $character-name = $validated<character-name> // 'unknown';
 
                 if self.is-lobby {

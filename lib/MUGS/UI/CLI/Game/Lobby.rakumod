@@ -48,11 +48,11 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
                           .<my-characters>.elems             ?? '!' !! '';
             my $needed  = max(.<config><min-players>, .<config><start-players>);
             my $full    = $players >= .<config><max-players>;
-            my $filling = .<gamestate> eq 'NotStarted' && $players < $needed;
+            my $filling = .<gamestate> == NotStarted && $players < $needed;
             my $waiting = $filling ?? "$players/$needed" !!
                           $full    ?? '-full-'           !! '';
 
-            ($joined, .<game-id>, .<game-type>, .<gamestate>, $waiting)
+            ($joined, .<game-id>, .<game-type>, GameState(.<gamestate>), $waiting)
         }
 
         if @data {
