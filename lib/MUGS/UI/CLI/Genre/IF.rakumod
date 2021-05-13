@@ -12,7 +12,7 @@ class MUGS::UI::CLI::Genre::IF is MUGS::UI::CLI::Game {
     }
 
     method show-game-state($response) {
-        my %data := $response.data;
+        my %data := $response ~~ Map ?? $response !! $response.data;
 
         if %data<gamestate> >= Finished {
             given $.client.my-winloss($response) {
