@@ -386,8 +386,20 @@ class MUGS::UI::CLI::Input {
 
     #| Detect terminal size, returning (rows, cols) or Empty if unable
     method detect-terminal-size() {
-        my $response = self.query-terminal("\e[18t", 't');
-        $response ~~ /^ "\e[8;" (\d+) ';' (\d+) 't' $/ ?? (+$0, +$1) !! Empty
+        # XXXX: This query has been found to have compatibility problems; it
+        #       works in xterm and libvte terminals, but not in many others
+        #       such as Konsole, Windows Console, linux, etc.
+        # my $response = self.query-terminal("\e[18t", 't');
+        # $response ~~ /^ "\e[8;" (\d+) ';' (\d+) 't' $/ ?? (+$0, +$1) !! Empty
+
+        # Instead of the above, take advantage of clipping behavior of cursor
+        # movement commands by saving the cursor, requesting a move way outside
+        # the terminal, detecting the cursor position, and restoring the cursor.
+
+        $!output.print("\e7\e[9999;9999H");
+        my $answer := self.detect-cursor-pos;
+        $!output.print("\e8");
+        $answer
     }
 
     #| Full input/edit loop; returns final user input or Str if aborted
