@@ -1,6 +1,6 @@
 Revision history for MUGS-UI-CLI
 
-0.1.2  *WIP*
+0.1.2  2021-05-13
   [CBOR transition]
   - Most changes this release are trivial changes to support the overall
     transition of MUGS to CBOR network message serialization; more details
