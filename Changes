@@ -6,6 +6,10 @@ Revision history for MUGS-UI-CLI
     transition of MUGS to CBOR network message serialization; more details
     in the MUGS-Core Changes doc
 
+  [Bug fixes]
+  - MUGS::UI::CLI::Input now works correctly with more terminal types
+    (previously, could hang after displaying prompt on some terminals)
+
 
 0.1.1  2021-04-15
   [Bug fixes]
