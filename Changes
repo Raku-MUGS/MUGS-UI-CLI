@@ -4,6 +4,9 @@ Revision history for MUGS-UI-CLI
   [Contacting us]
   - Move official IRC support channel from Freenode to Libera.Chat
 
+  [Testing]
+  - Run GitHub test workflow against MUGS-Core/Games HEAD rather than previous release
+
 
 0.1.2  2021-05-13
   [CBOR transition]
