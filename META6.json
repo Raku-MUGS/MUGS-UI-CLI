@@ -8,7 +8,6 @@
   "depends": [
     "MUGS::Core:ver<0.1.2>",
     "MUGS::Games:ver<0.1.2>",
-    "Term::termios",
     "Terminal::ANSIColor",
     "Terminal::LineEditor",
     "Text::MiscUtils::Layout"
@@ -30,8 +29,7 @@
     "MUGS::UI::CLI::Genre::Guessing": "lib/MUGS/UI/CLI/Genre/Guessing.rakumod",
     "MUGS::UI::CLI::Genre::IF": "lib/MUGS/UI/CLI/Genre/IF.rakumod",
     "MUGS::UI::CLI::Genre::MNKGame": "lib/MUGS/UI/CLI/Genre/MNKGame.rakumod",
-    "MUGS::UI::CLI::Genre::Test": "lib/MUGS/UI/CLI/Genre/Test.rakumod",
-    "MUGS::UI::CLI::Input": "lib/MUGS/UI/CLI/Input.rakumod"
+    "MUGS::UI::CLI::Genre::Test": "lib/MUGS/UI/CLI/Genre/Test.rakumod"
   },
   "resources": [
   ],

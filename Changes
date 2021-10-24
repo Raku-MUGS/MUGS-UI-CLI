@@ -4,6 +4,10 @@ Revision history for MUGS-UI-CLI
   [Contacting us]
   - Move official IRC support channel from Freenode to Libera.Chat
 
+  [Input]
+  - Switch from internal line editor (MUGS::UI::CLI::Input) to
+    Terminal::LineEditor, which is a much enhanced version of the same
+
   [Testing]
   - Run GitHub test workflow against MUGS-Core/Games HEAD rather than previous release
 

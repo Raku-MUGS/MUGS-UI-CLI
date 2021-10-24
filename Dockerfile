@@ -9,7 +9,7 @@ USER root:root
 RUN apt-get update \
  && apt-get -y --no-install-recommends install build-essential \
  && zef update \
- && zef install Term::termios \
+ && zef install Terminal::LineEditor \
  && apt-get purge -y --auto-remove build-essential \
  && rm -rf /var/lib/apt/lists/*
 

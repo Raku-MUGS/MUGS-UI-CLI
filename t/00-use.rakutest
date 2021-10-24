@@ -8,7 +8,6 @@ use MUGS::Games:ver<0.1.2>;
 
 ### CLI INTERFACE
 
-use MUGS::UI::CLI::Input;
 use MUGS::UI::CLI;
 
 use MUGS::UI::CLI::Game::Lobby;
