@@ -1,12 +1,11 @@
 # ABSTRACT: Core logic to set up and run a CLI game
 
+use Terminal::ANSIColor;
+use Terminal::LineEditor::RawTerminalInput;
+
 use MUGS::Core;
 use MUGS::Util::StructureValidator;
 use MUGS::App::LocalUI;
-use MUGS::UI::CLI::Input;
-
-use Term::termios;
-use Terminal::ANSIColor;
 
 
 # Use subcommand MAIN args
@@ -17,7 +16,7 @@ use Terminal::ANSIColor;
 class MUGS::App::CLI is MUGS::App::LocalUI {
     has Bool $.screen-reader;  #= Tune output for screen readers
     has Bool $.ansi;           #= Enable ANSI color
-    has MUGS::UI::CLI::Input $!input .= new;
+    has Terminal::LineEditor::CLIInput $!input .= new;
     has @!active-game-uis;
 
     method ui-type() { 'CLI' }

@@ -2,10 +2,11 @@
 
 unit module MUGS::UI::CLI:auth<zef:japhb>:ver<0.1.2>;
 
+use Terminal::LineEditor::RawTerminalInput;
+
 use MUGS::Core;
 use MUGS::Client;
 use MUGS::UI;
-use MUGS::UI::CLI::Input;
 use MUGS::Util::StructureValidator;
 
 
@@ -15,9 +16,9 @@ class Sentinel::QUIT { }
 
 # Base class for CLIs
 class Game is MUGS::UI::Game {
-    has MUGS::UI::CLI::Input:D $.input  .= new;
-    has Channel:D              $.pushed .= new;
-    has Bool                   $.screen-reader;  #= Tune output for screen readers
+    has Terminal::LineEditor::CLIInput:D $.input  .= new;
+    has Channel:D                        $.pushed .= new;
+    has Bool $.screen-reader;  #= Tune output for screen readers
 
     method ui-type()       { 'CLI' }
     method prompt-string() { '> '  }

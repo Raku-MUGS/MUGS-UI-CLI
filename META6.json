@@ -10,6 +10,7 @@
     "MUGS::Games:ver<0.1.2>",
     "Term::termios",
     "Terminal::ANSIColor",
+    "Terminal::LineEditor",
     "Text::MiscUtils::Layout"
   ],
   "description": "CLI UI for MUGS, including App and game UIs",
