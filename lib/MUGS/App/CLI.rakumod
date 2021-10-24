@@ -56,11 +56,11 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
     }
 
     method prompt-for-password(Str:D $prompt = 'Password') {
-        $!input.prompt(self.styled-prompt("$prompt: "), :mask<*>);
+        $!input.prompt(self.styled-prompt("$prompt:"), :mask<*>);
     }
 
     method text-input(Str:D $label, Str :$default) {
-        my $styled = self.styled-prompt($default ?? "$label [$default]: " !! "$label: ");
+        my $styled = self.styled-prompt($default ?? "$label [$default]:" !! "$label:");
         my $input;
         until $input {
             my $raw = $!input.prompt($styled);
@@ -82,7 +82,7 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
 
         my $option;
         until $option {
-            my $new-option = $!input.prompt(self.styled-prompt("Selection: "));
+            my $new-option = $!input.prompt(self.styled-prompt("Selection:"));
             return unless $new-option.defined;
             $new-option .= trim;
             if $new-option ~~ /^ \d+ $/ && 1 <= $new-option <= @options {

@@ -15,7 +15,7 @@ class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
     has State $.state = State(0);
 
     method game-type()     { 'lobby' }
-    method prompt-string() { %prompts{$.state} ~ ' > ' }
+    method prompt-string() { %prompts{$.state} ~ ' >' }
     method is-lobby()      { True }
 
     method show-available-game-types(::?CLASS:D: Bool :$all) {

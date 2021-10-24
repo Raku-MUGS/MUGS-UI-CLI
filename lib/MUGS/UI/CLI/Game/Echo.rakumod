@@ -8,7 +8,7 @@ use MUGS::UI::CLI::Genre::Test;
 #| UI for echo test
 class MUGS::UI::CLI::Game::Echo is MUGS::UI::CLI::Genre::Test {
     method game-type()     { 'echo' }
-    method prompt-string() { 'Enter a message > ' }
+    method prompt-string() { 'Enter a message >' }
 
     method show-initial-state(::?CLASS:D:) { }
     method show-echo($response) { $.app-ui.put-sanitized($response.data<echo>) }

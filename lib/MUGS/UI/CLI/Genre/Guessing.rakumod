@@ -7,7 +7,7 @@ use MUGS::UI::CLI;
 
 #| CLI for guessing games
 class MUGS::UI::CLI::Genre::Guessing is MUGS::UI::CLI::Game {
-    method prompt-string()           { 'Next guess > ' }
+    method prompt-string()           { 'Next guess >' }
     method guess-status($response)   { ... }
     method game-status($response)    { '' }
     method winloss-status($response) {

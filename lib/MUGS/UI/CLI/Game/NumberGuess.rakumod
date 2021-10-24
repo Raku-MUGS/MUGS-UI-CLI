@@ -10,7 +10,7 @@ class MUGS::UI::CLI::Game::NumberGuess is MUGS::UI::CLI::Genre::Guessing {
 
     method prompt-string(::?CLASS:D:) {
         my ($min, $max) = $.client.initial-state< min max >;
-        "Enter a natural number between $min and $max > "
+        "Enter a natural number between $min and $max >"
     }
 
     method guess-status($response) {

@@ -7,7 +7,7 @@ use MUGS::UI::CLI::Genre::Guessing;
 #| CLI for Snowman word guessing game
 class MUGS::UI::CLI::Game::Snowman is MUGS::UI::CLI::Genre::Guessing {
     method game-type()     { 'snowman' }
-    method prompt-string() { 'Enter a letter in this word > ' }
+    method prompt-string() { 'Enter a letter in this word >' }
 
     method guess-status($response) {
         "Guess {$response.data<turns>} was "

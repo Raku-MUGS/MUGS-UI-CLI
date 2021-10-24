@@ -21,7 +21,7 @@ class Game is MUGS::UI::Game {
     has Bool $.screen-reader;  #= Tune output for screen readers
 
     method ui-type()       { 'CLI' }
-    method prompt-string() { '> '  }
+    method prompt-string() { '>'   }
     method is-lobby()      { False }
     method game-help()     { ...   }
 
