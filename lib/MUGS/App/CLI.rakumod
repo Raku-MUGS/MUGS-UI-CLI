@@ -9,7 +9,7 @@ use MUGS::App::LocalUI;
 
 
 # Use subcommand MAIN args
-%PROCESS::SUB-MAIN-OPTS = :named-anywhere;
+PROCESS::<%SUB-MAIN-OPTS> := :named-anywhere;
 
 
 #| CLI App
