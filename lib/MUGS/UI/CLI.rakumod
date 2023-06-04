@@ -1,6 +1,6 @@
 # ABSTRACT: CLI UI for MUGS, including App and game UIs
 
-unit module MUGS::UI::CLI:auth<zef:japhb>:ver<0.1.2>;
+unit module MUGS::UI::CLI:auth<zef:japhb>:ver<0.1.3>;
 
 use Terminal::LineEditor::RawTerminalInput;
 
