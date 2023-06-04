@@ -6,8 +6,8 @@
   "build-depends": [
   ],
   "depends": [
-    "MUGS::Core:ver<0.1.2>",
-    "MUGS::Games:ver<0.1.2>",
+    "MUGS::Core:ver<0.1.3>",
+    "MUGS::Games:ver<0.1.3>",
     "Terminal::ANSIColor",
     "Terminal::LineEditor",
     "Text::MiscUtils::Layout"
