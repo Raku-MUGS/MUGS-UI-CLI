@@ -1,12 +1,18 @@
 Revision history for MUGS-UI-CLI
 
-0.1.3  *WIP*
+{{$NEXT}}
+  [Bug Fixes]
+  - Work around a Rakudo change in PROCESS dynamics
+
   [Contacting us]
   - Move official IRC support channel from Freenode to Libera.Chat
 
   [Input]
   - Switch from internal line editor (MUGS::UI::CLI::Input) to
     Terminal::LineEditor, which is a much enhanced version of the same
+
+  [Packaging]
+  - Use mi6 UploadToZef for releasing
 
   [Testing]
   - Run GitHub test workflow against MUGS-Core/Games HEAD rather than previous release
