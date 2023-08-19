@@ -384,6 +384,7 @@ multi MAIN('perf', UInt:D $count = 100_000,
 
     my $ui = MUGS::App::CLI.new;
     $ui.initialize;
+    $ui.load-plugins;
     $ui.ensure-authenticated-session(options<server>   // Str,
                                      options<universe> // Str);
     $ui.choose-identities;
