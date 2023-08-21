@@ -1,4 +1,4 @@
 #!/usr/bin/env raku
 use v6.d;
-BEGIN put 'Loading MUGS.' if $*OUT.t;
+BEGIN put 'Loading and optimizing MUGS.' if $*OUT.t && !@*ARGS.grep('-?'|'--help');
 use MUGS::App::CLI;
