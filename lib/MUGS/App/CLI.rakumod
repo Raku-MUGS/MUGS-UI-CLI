@@ -402,14 +402,14 @@ sub GENERATE-USAGE(&main, |capture) is export {
 
 
 #| Run a perf test of echo "game"
-multi MAIN('perf', UInt:D $count = 100_000,
+multi MAIN('perf', UInt:D $count = 10_000,
            |options where $common-args) is export {
     perf-test($count, |options)
 }
 
 #| Play a requested CLI game
-multi MAIN($game-type, |options where $common-args) is export {
-    play-via-local-ui(MUGS::App::CLI, :$game-type, |options)
+multi MAIN($game-type, :$game-id = 0, |options where $common-args) is export {
+    play-via-local-ui(MUGS::App::CLI, :$game-type, :$game-id, |options)
 }
 
 #| Enter the game choice lobby (DEFAULT)
