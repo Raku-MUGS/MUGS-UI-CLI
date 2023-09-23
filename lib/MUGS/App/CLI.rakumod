@@ -76,7 +76,7 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
     method text-input(Str:D $label, Str :$default) {
         my $styled = self.styled-prompt($default ?? "$label [$default]:" !! "$label:");
         my $input;
-        until $input {
+        until $input.defined {
             my $raw = $!input.prompt($styled);
             return unless $raw.defined;
             $input = $raw.trim || $default;
