@@ -9,6 +9,7 @@
     "MUGS::Core:ver<0.1.3>",
     "MUGS::Games:ver<0.1.3>",
     "Terminal::ANSIColor",
+    "Terminal::Capabilities",
     "Terminal::LineEditor",
     "Text::MiscUtils::Layout"
   ],

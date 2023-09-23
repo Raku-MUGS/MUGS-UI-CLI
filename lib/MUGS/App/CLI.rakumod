@@ -1,5 +1,6 @@
 # ABSTRACT: Core logic to set up and run a CLI game
 
+use Terminal::Capabilities;
 use Terminal::ANSIColor;
 use Terminal::LineEditor::RawTerminalInput;
 
@@ -16,15 +17,26 @@ PROCESS::<%SUB-MAIN-OPTS> := :named-anywhere;
 class MUGS::App::CLI is MUGS::App::LocalUI {
     has Bool $.screen-reader;  #= Tune output for screen readers
     has Bool $.ansi;           #= Enable ANSI color
-    has Terminal::LineEditor::CLIInput $!input .= new;
+    has Bool $.vt100-boxes;    #= Enable VT100 box drawing symbols
+    has Str  $.symbols;        #= Terminal/font symbol set
+
+    has Terminal::Capabilities         $!caps;
+    has Terminal::LineEditor::CLIInput $!input;
+
     has @!active-game-uis;
 
     method ui-type() { 'CLI' }
 
     method initialize() {
         callsame;
+
         $!screen-reader //= $.config.value('UI', 'Common', 'tune-for-screen-reader');
         $!ansi          //= $.config.value('UI', 'CLI',    'color');
+        $!vt100-boxes   //= $.config.value('UI', 'CLI',    'vt100-boxes');
+        $!symbols       //= $.config.value('UI', 'CLI',    'symbols');
+
+        $!caps  .= new(:$!vt100-boxes, symbol-set => symbol-set($!symbols));
+        $!input .= new(:$!caps);
     }
 
     method put-colored(Str $text, Str:D $color, Bool :$include-empty) {
@@ -382,8 +394,9 @@ sub perf-test(UInt:D $count, Bool :$debug,
 
 
 #| Common options that work for all subcommands
-my $common-args = :(Str :$server, Str :$universe,
-                    Bool :$debug, Bool :$screen-reader, Bool :$ansi);
+my $common-args = :(Str :$server, Str :$universe, Bool :$debug,
+                    Str :$symbols, Bool :$vt100-boxes,
+                    Bool :$screen-reader, Bool :$ansi);
 
 #| Add description of common arguments/options to standard USAGE
 sub GENERATE-USAGE(&main, |capture) is export {
@@ -394,9 +407,22 @@ sub GENERATE-USAGE(&main, |capture) is export {
         Common options for all commands:
           --screen-reader   Tune output for screen reader use
           --ansi            Enable ANSI colors (default)
+          --vt100-boxes     Enable use of VT100 box drawing symbols
+          --symbols=<Str>   Set terminal/font symbol set (defaults to uni1)
           --server=<Str>    Specify an external server (defaults to internal)
           --universe=<Str>  Specify a local universe (internal server only)
           --debug           Enable debug output
+
+        Known symbol sets:
+          ascii    7-bit ASCII printables only (most compatible)
+          latin1   Latin-1 / ISO-8859-1
+          cp1252   CP1252 / Windows-1252
+          w1g      W1G-compatible subset of WGL4
+          wgl4     Full WGL4 / Windows Glyph List 4
+          mes2     MES-2 / Multilingual European Subset No. 2
+          uni1     Unicode 1.1
+          uni7     Unicode 7.0 + Emoji 0.7
+          full     Full modern Unicode support (most features)
         OPTIONS
 }
 
