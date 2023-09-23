@@ -2,6 +2,7 @@
 
 use Terminal::Capabilities;
 use Terminal::ANSIColor;
+use Text::MiscUtils::Layout;
 use Terminal::LineEditor::RawTerminalInput;
 
 use MUGS::Core;
@@ -111,23 +112,27 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
     }
 
     method make-table(@columns, @data) {
-        # XXXX: Correct for duowidth
-        my @widths = @columns.map(*.chars // 1);
+        my @widths = @columns.map({ duospace-width(~$_) || 1 });
         for @data -> @row {
             die "Table data has wrong number of columns" if @row != @columns;
 
             for @row.kv -> $i, $v {
-                @widths[$i] max= $v.chars;
+                @widths[$i] max= duospace-width(~$v);
             }
         }
 
-        my $format = @widths.map('%-' ~ * ~ 's').join('  ');
+        my sub layout-row(@row) {
+            @row.kv.map(-> $i, $v {
+                $v ~ ' ' x (@widths[$i] - duospace-width(~$v))
+            }).join('  ')
+        }
+
         my @lines;
-        @lines.push: colored(sprintf($format, |@columns), 'bold');
-        @lines.push: sprintf($format, |$_) for @data;
+        my $header = layout-row(@columns);
+        @lines.push: $!ansi ?? colored($header, 'bold') !! $header;
+        @lines.push: layout-row($_) for @data;
         @lines
     }
-
 
 
     #| Connect to server and authenticate as a valid user
