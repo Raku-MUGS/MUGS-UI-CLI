@@ -357,6 +357,30 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
 }
 
 
+#| Boot CLI and jump directly to perf test
+sub perf-test(UInt:D $count, Bool :$debug,
+              Str :$server, Str :$universe, *%ui-options) {
+    # Configure debugging and create app-ui object
+    my $*DEBUG = $debug // ?%*ENV<MUGS_DEBUG>;
+    my $app-ui = MUGS::App::CLI.new(|%ui-options);
+
+    # Work through init stages and connection/authentication to server
+    $app-ui.initialize;
+    $app-ui.load-plugins;
+    $app-ui.ensure-authenticated-session($server // Str, $universe // Str);
+    $app-ui.choose-identities;
+
+    # Start an echo "game" and run the perf test
+    my $game-type = 'echo';
+    my $client = $app-ui.new-game-client(:$game-type);
+    my $runner = $app-ui.launch-game-ui(:$game-type, :$client);
+    $runner.perf-test($count);
+
+    # Clean up
+    $app-ui.shutdown;
+}
+
+
 #| Common options that work for all subcommands
 my $common-args = :(Str :$server, Str :$universe,
                     Bool :$debug, Bool :$screen-reader, Bool :$ansi);
@@ -380,21 +404,7 @@ sub GENERATE-USAGE(&main, |capture) is export {
 #| Run a perf test of echo "game"
 multi MAIN('perf', UInt:D $count = 100_000,
            |options where $common-args) is export {
-    my $*DEBUG = options<debug> // ?%*ENV<MUGS_DEBUG>;
-
-    my $ui = MUGS::App::CLI.new;
-    $ui.initialize;
-    $ui.load-plugins;
-    $ui.ensure-authenticated-session(options<server>   // Str,
-                                     options<universe> // Str);
-    $ui.choose-identities;
-
-    my $game-type = 'echo';
-    my $client = $ui.new-game-client(:$game-type);
-    my $runner = $ui.launch-game-ui(:$game-type, :$client);
-    $runner.perf-test($count);
-
-    $ui.shutdown;
+    perf-test($count, |options)
 }
 
 #| Play a requested CLI game
