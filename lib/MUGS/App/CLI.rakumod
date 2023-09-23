@@ -56,7 +56,9 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
     }
 
     method present-tense-message(Str:D $text) {
-        $text ~ ($.screen-reader ?? '.' !! ' ...')
+        my constant CP1252 = Terminal::Capabilities::SymbolSet::CP1252;
+        $text ~ ($.screen-reader             ?? '.' !!
+                 $!caps.symbol-set >= CP1252 ?? '…' !! ' ...')
     }
 
     method put-status-update(Str:D $text) {
