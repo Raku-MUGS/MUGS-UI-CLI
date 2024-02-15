@@ -9,7 +9,7 @@
     "MUGS::Core:ver<0.1.3>",
     "MUGS::Games:ver<0.1.3>",
     "Terminal::ANSIColor",
-    "Terminal::Capabilities",
+    "Terminal::Capabilities:auth<zef:japhb>:ver<0.0.3>",
     "Terminal::LineEditor",
     "Text::MiscUtils::Layout"
   ],

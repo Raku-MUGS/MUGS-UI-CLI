@@ -424,7 +424,8 @@ sub GENERATE-USAGE(&main, |capture) is export {
           ascii    7-bit ASCII printables only (most compatible)
           latin1   Latin-1 / ISO-8859-1
           cp1252   CP1252 / Windows-1252
-          w1g      W1G-compatible subset of WGL4
+          w1g      W1G-compatible subset of WGL4R
+          wgl4r    Required (non-optional) WGL4 glyphs
           wgl4     Full WGL4 / Windows Glyph List 4
           mes2     MES-2 / Multilingual European Subset No. 2
           uni1     Unicode 1.1
