@@ -2,6 +2,7 @@
 
 use MUGS::Core;
 use MUGS::Client::Game::Lobby;
+use MUGS::UI::Game::Lobby;
 use MUGS::UI::CLI;
 
 enum State < SelectType >;
@@ -11,7 +12,9 @@ my %prompts =
 
 
 #| CLI UI for game selection lobby
-class MUGS::UI::CLI::Game::Lobby is MUGS::UI::CLI::Game {
+class MUGS::UI::CLI::Game::Lobby
+   is MUGS::UI::CLI::Game
+ does MUGS::UI::Game::Lobby {
     has State $.state = State(0);
 
     method game-type()     { 'lobby' }
