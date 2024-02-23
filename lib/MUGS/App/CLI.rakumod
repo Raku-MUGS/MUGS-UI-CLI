@@ -377,10 +377,10 @@ class MUGS::App::CLI is MUGS::App::LocalUI {
 
 
 #| Boot CLI and jump directly to perf test
-sub perf-test(UInt:D $count, Bool :$debug,
+sub perf-test(UInt:D $count, UInt :$debug,
               Str :$server, Str :$universe, *%ui-options) {
     # Configure debugging and create app-ui object
-    my $*DEBUG = $debug // ?%*ENV<MUGS_DEBUG>;
+    my $*DEBUG = $debug // +(%*ENV<MUGS_DEBUG> // 0);
     my $app-ui = MUGS::App::CLI.new(|%ui-options);
 
     # Work through init stages and connection/authentication to server
@@ -401,7 +401,7 @@ sub perf-test(UInt:D $count, Bool :$debug,
 
 
 #| Common options that work for all subcommands
-my $common-args = :(Str :$server, Str :$universe, Bool :$debug,
+my $common-args = :(Str :$server, Str :$universe, UInt :$debug,
                     Str :$symbols, Bool :$vt100-boxes,
                     Bool :$screen-reader, Bool :$ansi);
 
@@ -418,7 +418,7 @@ sub GENERATE-USAGE(&main, |capture) is export {
           --symbols=<Str>   Set terminal/font symbol set (defaults to uni1)
           --server=<Str>    Specify an external server (defaults to internal)
           --universe=<Str>  Specify a local universe (internal server only)
-          --debug           Enable debug output
+          --debug=<UInt>    Enable debug output and set detail level
 
         Known symbol sets:
           ascii    7-bit ASCII printables only (most compatible)
