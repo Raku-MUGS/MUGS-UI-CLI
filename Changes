@@ -1,6 +1,8 @@
 Revision history for MUGS-UI-CLI
 
 {{$NEXT}}
+
+0.1.4  2024-03-02T20:54:25-08:00
   [App]
   - Tweak the mugs-cli boot message, and skip it if the user is just requesting
     USAGE info
