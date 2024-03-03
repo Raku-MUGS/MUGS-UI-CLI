@@ -1,6 +1,33 @@
 Revision history for MUGS-UI-CLI
 
 {{$NEXT}}
+  [App]
+  - Tweak the mugs-cli boot message, and skip it if the user is just requesting
+    USAGE info
+  - Tweak command line options and their defaults
+
+  [Bug Fixes]
+  - Tweak CI workflow to silence GitHub Workflow warnings
+
+  [MUGS::Core Updates]
+  - Follow a LocalUI initialization API change
+  - Switch to MUGS::UI::Game::Lobby role for common lobby methods
+  - Convert MUGS_DEBUG to a UInt
+  - Update META6 dependencies
+
+  [Packaging]
+  - Update copyright year range in README
+
+  [Refactoring]
+  - Extract perf-test to its own routine and clean it up a bit
+
+  [UI/UX]
+  - Use Terminal::Capabilities to support changing terminal symbol set and
+    VT100 box drawing compatibility
+  - Tweak present-tense-message for symbol set awareness
+  - Provide a way to intentionally allow empty text input
+  - Make make-table duospace-aware
+
 
 0.1.3  2023-06-04T12:17:18-07:00
   [Bug Fixes]
