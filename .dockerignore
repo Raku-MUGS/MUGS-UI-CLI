@@ -4,7 +4,7 @@
 
 # Packages
 /sdist
-/MUGS-Core-*
+/MUGS-UI-CLI-*
 
 # Backup files
 **/*~
