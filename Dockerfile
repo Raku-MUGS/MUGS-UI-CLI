@@ -9,17 +9,20 @@ USER root:root
 RUN apt-get update \
  && apt-get -y --no-install-recommends install build-essential \
  && zef update \
- && zef install Terminal::LineEditor \
+ && zef install Term::termios:ver'<0.2>' \
+ && rm -rf /root/.zef \
+ && chgrp raku /tmp/.zef \
+ && chmod g+w /tmp/.zef \
  && apt-get purge -y --auto-remove build-essential \
  && rm -rf /var/lib/apt/lists/*
 
-COPY . /home/raku
-
-RUN zef install --deps-only . \
- && raku -c -Ilib bin/mugs-cli
-
-RUN zef install . --/test
-
 USER raku:raku
 
-ENTRYPOINT ["mugs-cli"]
+WORKDIR /home/raku/MUGS/MUGS-UI-CLI
+COPY . .
+
+RUN zef install --deps-only . \
+ && zef install --/test . \
+ && rm -rf /home/raku/.zef $(find /tmp/.zef -maxdepth 1 -user raku)
+
+CMD ["mugs-cli"]
